@@ -90,7 +90,7 @@ int main(int argc, char *argv[])
 
     chess::PgnPrinter *pp = new chess::PgnPrinter();
     QStringList *pgn = pp->printGame(g);
-    qDebug() << pgn->join("");
+    std::cout << pgn->join("\n").toStdString() << std::endl;
 
     // walk through the list of index entries
     // a) create new game and new pgn file

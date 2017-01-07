@@ -220,6 +220,7 @@ chess::Game* chess::Database::getGameAt(int i) {
         game_raw.fill(char(0x20));
         gi.readRawData(game_raw.data(), length);
         qDebug() << "length" << length << " arr: " << game_raw.toHex();
+        this->dcgdecoder->decodeGame(game, &game_raw);
     }
     return game;
 }

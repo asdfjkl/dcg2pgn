@@ -4,6 +4,7 @@
 #include <QString>
 #include "chess/pgn_reader.h"
 #include "chess/dcgencoder.h"
+#include "chess/dcgdecoder.h"
 #include "chess/indexentry.h"
 #include "chess/game.h"
 
@@ -53,6 +54,7 @@ private:
     int decodeLength(QDataStream *stream);
 
     chess::DcgEncoder *dcgencoder;
+    chess::DcgDecoder *dcgdecoder;
     chess::PgnReader *pgnreader;
 
 };
