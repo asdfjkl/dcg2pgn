@@ -86,11 +86,11 @@ int main(int argc, char *argv[])
     db->loadNames();
     qDebug() << "loading sites...";
     db->loadSites();
-    chess::Game *g = db->getGameAt(0);
+    //chess::Game *g = db->getGameAt(0);
 
     chess::PgnPrinter *pp = new chess::PgnPrinter();
-    QStringList *pgn = pp->printGame(g);
-    std::cout << pgn->join("\n").toStdString() << std::endl;
+    //QStringList *pgn = pp->printGame(g);
+    //std::cout << pgn->join("\n").toStdString() << std::endl;
 
     // walk through the list of index entries
     // a) create new game and new pgn file
@@ -102,5 +102,26 @@ int main(int argc, char *argv[])
 
     // don't forget to unmap and close all files
 
+    QFile fOut(dcFileName.append(".pgn"));
+    bool success = false;
+    if(fOut.open(QFile::WriteOnly | QFile::Text)) {
+        QTextStream s(&fOut);
+        for(int i=0;i<db->countGames();i++) {
+            chess::Game *g = db->getGameAt(i);
+            QStringList *pgn = pp->printGame(g);
+            for (int i = 0; i < pgn->size(); ++i) {
+                s << pgn->at(i) << '\n';
+            }
+            delete g;
+            s << '\n' << '\n';
+        }
+        success = true;
+    } else {
+      std::cerr << "error opening output file\n";
+    }
+    fOut.close();
+    if(!success) {
+        throw std::invalid_argument("Error writing file");
+    }
     return 0;
 }
