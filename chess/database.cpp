@@ -228,7 +228,7 @@ chess::Game* chess::Database::getGameAt(int i) {
 int chess::Database::decodeLength(QDataStream *stream) {
     quint8 len1 = 0;
     *stream >> len1;
-    qDebug() << "len1 is: " << len1;
+    qDebug() << "len1 is this: " << QString("%1").arg(len1 , 0, 16);
     if(len1 < 127) {
         return int(len1);
     }
@@ -257,6 +257,13 @@ int chess::Database::decodeLength(QDataStream *stream) {
         *stream >> len;
         return int(len);
     }
+    QByteArray buffer;
+    quint8 byte;
+    for (uint i=0; i<50; ++i) {
+          *stream >> byte;
+          buffer.append(byte);
+    }
+    qDebug() << "error here: " << buffer.toHex();
     throw std::invalid_argument("length decoding called with illegal byte value");
 }
 

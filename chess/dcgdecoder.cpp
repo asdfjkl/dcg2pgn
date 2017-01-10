@@ -37,6 +37,7 @@ int chess::DcgDecoder::decodeLength(QByteArray *ba, int *index) {
         *index+=5;
         return int(ret);
     }
+    qDebug() << "error here: " << ba->mid(*index, 30).toHex();
     throw std::invalid_argument("length decoding called with illegal byte value");
 }
 
@@ -50,6 +51,7 @@ void chess::DcgDecoder::decodeAnnotations(QByteArray *ba, int *idx, int len, Gam
 
 chess::Game* chess::DcgDecoder::decodeGame(Game *g, QByteArray *ba) {
     // to remember variations
+    qDebug() << "called decode game with: " << ba->toHex();
     QStack<GameNode*> *game_stack = new QStack<GameNode*>();
     game_stack->push(g->getRootNode());
     GameNode* current = g->getRootNode();
@@ -95,7 +97,10 @@ chess::Game* chess::DcgDecoder::decodeGame(Game *g, QByteArray *ba) {
                 idx++;
             }
             else if(byte == 0x86) {
+                idx++;
                 // start of comment
+                qDebug() << "comment start, trying to get len";
+                qDebug() << ba->mid(idx, 20).toHex();
                 int len = this->decodeLength(ba, &idx);
                 QString comment = QString::fromUtf8(QByteArray(ba->mid(idx,len)));
                 current->setComment(comment);
