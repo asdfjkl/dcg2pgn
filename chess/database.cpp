@@ -195,14 +195,19 @@ chess::Game* chess::Database::getGameAt(int i) {
         date.append("??");
     }
     game->headers->insert("Date", date);
+    qDebug() << "RESULT: " << ie->result;
     if(ie->result == RES_WHITE_WINS) {
         game->headers->insert("Result", "1-0");
+        game->setResult(RES_WHITE_WINS);
     } else if(ie->result == RES_BLACK_WINS) {
         game->headers->insert("Result", "0-1");
+        game->setResult(RES_BLACK_WINS);
     } else if(ie->result == RES_DRAW) {
         game->headers->insert("Result", "1/2-1/2");
+        game->setResult(RES_DRAW);
     } else {
         game->headers->insert("Result", "*");
+        game->setResult(RES_UNDEF);
     }
     game->headers->insert("ECO", ie->eco);
     if(ie->round != 0) {
