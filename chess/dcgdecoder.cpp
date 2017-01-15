@@ -42,8 +42,11 @@ int chess::DcgDecoder::decodeLength(QByteArray *ba, int *index) {
 }
 
 void chess::DcgDecoder::decodeAnnotations(QByteArray *ba, int *idx, int len, GameNode *current) {
-    for(int i=0;i<len;i++) {
+    int start = *idx;
+    int stop = (*idx) + len;
+    for(int i=start;i<stop;i++) {
         quint8 ann_i = ba->at(i);
+        qDebug() << "decoding annotation byte: " << ann_i;
         current->addNag(int(ann_i));
         (*idx)++;
     }
@@ -114,10 +117,11 @@ chess::Game* chess::DcgDecoder::decodeGame(Game *g, QByteArray *ba) {
             else if(byte == 0x87) {
                 idx++;
                 // annotations follow
-                qDebug() << "annotations follow...";
+                qDebug() << "ANNOTATIONS follow...";
+                qDebug() << ba->mid(idx, 10).toHex();
                 int len = this->decodeLength(ba, &idx);
+                qDebug() << "len is: " << len;
                 this->decodeAnnotations(ba, &idx, len, current);
-                qDebug() << ba->mid(idx, len+10).toHex();
                 //idx+=len;
             } else if(byte == 0x88) {
                 // null move
