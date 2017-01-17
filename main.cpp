@@ -87,6 +87,7 @@ int main(int argc, char *argv[])
     qDebug() << "loading sites...";
     db->loadSites();
     //chess::Game *g = db->getGameAt(0);
+    db->loadEvents();
 
     chess::PgnPrinter *pp = new chess::PgnPrinter();
     //QStringList *pgn = pp->printGame(g);

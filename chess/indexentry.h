@@ -15,6 +15,7 @@ public:
     quint32 blackOffset;
     quint16 round;
     quint32 siteRef;
+    quint32 eventRef;
     quint16 eloWhite;
     quint16 eloBlack;
     quint8 result;
